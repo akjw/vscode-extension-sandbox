@@ -6,17 +6,7 @@ export function activate(context: vscode.ExtensionContext) {
 let currentPanel: vscode.WebviewPanel | undefined = undefined;
     context.subscriptions.push(
     vscode.commands.registerCommand('ide-prototype.mkGraph', () => {
-
-      // let location = currentPanel ? vscode.ViewColumn.Two : vscode.ViewColumn.Beside
-
-      // if(currentPanel){
-        // currentPanel.reveal(vscode.ViewColumn.Active);
-        // console.log(`Current: ${currentPanel}`)
-
-      // } else {
-
-      // }
-
+        // ensure that doc opens as new panel instead of new tab
         vscode.commands.executeCommand('vscode.setEditorLayout', { groups: [{ orientation: 0, groups: [{}, {orientation: 1, groups: [{}, {}], size: 0.5}], size: 0.5 }] })
 
         currentPanel = vscode.window.createWebviewPanel(
@@ -59,22 +49,25 @@ let currentPanel: vscode.WebviewPanel | undefined = undefined;
 	context.subscriptions.push(vscode.commands.registerCommand('markdown.show', async () => {
 			const uri = vscode.Uri.parse('markdown:' + 'L4'); // 'name of tab itself 
       const doc = await vscode.workspace.openTextDocument(uri); // calls back into the provider
+      const col = vscode.ViewColumn.Two ? vscode.ViewColumn.Three : vscode.ViewColumn.Two // set as new panel position
+
+      // ensure that doc opens as new panel instead of new tab
       vscode.commands.executeCommand('vscode.setEditorLayout', { groups: [{ orientation: 0, groups: [{}, { orientation: 1, groups: [{}, {}], size: 0.5}], size: 0.5 }] })
-      const col = vscode.ViewColumn.Two ? vscode.ViewColumn.Three : vscode.ViewColumn.Two
+     
 			await vscode.window.showTextDocument(doc, col);
 	}));
 }
 
 function getWebviewContent(graph: vscode.Uri) {
   return `<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cat Coding</title>
-</head>
-<body>
-    <img src="${graph}" width="500" />
-</body>
-</html>`;
+          <html lang="en">
+          <head>
+              <meta charset="UTF-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <title>L4 Graph</title>
+          </head>
+          <body>
+              <img src="${graph}" width="500" />
+          </body>
+          </html>`;
 }
