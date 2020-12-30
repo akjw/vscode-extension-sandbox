@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
+const markdown = require('./markdown');
 
 
 export function activate(context: vscode.ExtensionContext) {
@@ -7,7 +8,7 @@ let currentPanel: vscode.WebviewPanel | undefined = undefined;
     context.subscriptions.push(
     vscode.commands.registerCommand('ide-prototype.mkGraph', () => {
         // ensure that doc opens as new panel instead of new tab
-        vscode.commands.executeCommand('vscode.setEditorLayout', { groups: [{ orientation: 0, groups: [{}, {orientation: 1, groups: [{}, {}], size: 0.5}], size: 0.5 }] })
+        vscode.commands.executeCommand('vscode.setEditorLayout', { groups: [{ orientation: 0, groups: [{}, {orientation: 1, groups: [{}, {}], size: 0.5}], size: 0.5 }] });
 
         currentPanel = vscode.window.createWebviewPanel(
           'mkGraph',
@@ -39,7 +40,7 @@ let currentPanel: vscode.WebviewPanel | undefined = undefined;
 		// onDidChange = this.onDidChangeEmitter.event;
 
 		provideTextDocumentContent(uri: vscode.Uri): string {
-      let displayText = 'The Sale of Cabbages is Restricted. Everybody may sell the item, when the item is a cabbage and sale is onLegalDate or (unlikely) the seller has Exemption.'
+      let displayText = 'The Sale of Cabbages is Restricted. Everybody may sell the item, when the item is a cabbage and sale is onLegalDate or (unlikely) the seller has Exemption.';
       return displayText;
 		}
   };
@@ -49,10 +50,10 @@ let currentPanel: vscode.WebviewPanel | undefined = undefined;
 	context.subscriptions.push(vscode.commands.registerCommand('markdown.show', async () => {
 			const uri = vscode.Uri.parse('markdown:' + 'L4'); // 'name of tab itself 
       const doc = await vscode.workspace.openTextDocument(uri); // calls back into the provider
-      const col = vscode.ViewColumn.Two ? vscode.ViewColumn.Three : vscode.ViewColumn.Two // set as new panel position
+      const col = vscode.ViewColumn.Two ? vscode.ViewColumn.Three : vscode.ViewColumn.Two; // set as new panel position
 
       // ensure that doc opens as new panel instead of new tab
-      vscode.commands.executeCommand('vscode.setEditorLayout', { groups: [{ orientation: 0, groups: [{}, { orientation: 1, groups: [{}, {}], size: 0.5}], size: 0.5 }] })
+      vscode.commands.executeCommand('vscode.setEditorLayout', { groups: [{ orientation: 0, groups: [{}, { orientation: 1, groups: [{}, {}], size: 0.5}], size: 0.5 }] });
      
 			await vscode.window.showTextDocument(doc, col);
 	}));
